@@ -1,0 +1,18 @@
+Spring:
+  main:
+    allow-circular-references: true
+  profiles:
+    active: smart
+
+hr:
+  salary:
+     def:
+        percent5: 5
+     smart:
+        percent5: 5
+        percent10: 10
+        percent2: 2
+
+        limit10: 10
+        limit5: 5
+        limitTwoHalf: 2
