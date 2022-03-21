@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
+
 @SpringBootApplication
 public class HrApplication implements CommandLineRunner {
 
@@ -19,10 +21,10 @@ public class HrApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println(salaryService.setNewSalary(new Employee(200000, 10)));
-		System.out.println(salaryService.setNewSalary(new Employee(200000, 5)));
-		System.out.println(salaryService.setNewSalary(new Employee(200000, 3)));
-		System.out.println(salaryService.setNewSalary(new Employee(400000, 2)));
-		System.out.println(salaryService.setNewSalary(new Employee(400000, -1)));
+		System.out.println(salaryService.setNewSalary(new Employee(200000, 2010,11,17)));
+		System.out.println(salaryService.setNewSalary(new Employee(200000, 2016,3,21)));
+		System.out.println(salaryService.setNewSalary(new Employee(200000, 2018,5,5)));
+		System.out.println(salaryService.setNewSalary(new Employee(400000,2019,6,19)));
+		System.out.println(salaryService.setNewSalary(new Employee(400000, 2020, 3,22)));
 	}
 }

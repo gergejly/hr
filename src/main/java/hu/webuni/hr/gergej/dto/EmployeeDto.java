@@ -1,11 +1,11 @@
-package hu.webuni.hr.gergej.model;
+package hu.webuni.hr.gergej.dto;
 
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
-public class Employee {
+public class EmployeeDto {
 
     private long id;
     private String name;
@@ -13,12 +13,7 @@ public class Employee {
     private int salary;
     private LocalDateTime started;
 
-    public Employee(int salary, int year, int month, int day){
-        this.salary=salary;
-        this.started=LocalDateTime.of(year, month, day, 10,10,0);
-    }
-
-    public Employee(long id, String name, String rank, int salary, LocalDateTime started) {
+    public EmployeeDto(long id, String name, String rank, int salary, LocalDateTime started) {
         this.id = id;
         this.name = name;
         this.rank = rank;
@@ -26,7 +21,7 @@ public class Employee {
         this.started = started;
     }
 
-    public Employee() {
+    public EmployeeDto() {
     }
 
     public long getId() {

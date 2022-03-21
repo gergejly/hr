@@ -103,7 +103,7 @@ public class HrConfigProperties {
                 return limitTwoHalf;
             }
 
-            public void setLimitTwoHalf(int limitTwoHalf) {
+            public void setLimitTwoHalf(double limitTwoHalf) {
                 this.limitTwoHalf = limitTwoHalf;
             }
         }

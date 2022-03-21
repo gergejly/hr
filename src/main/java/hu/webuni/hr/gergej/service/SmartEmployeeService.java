@@ -5,7 +5,9 @@ import hu.webuni.hr.gergej.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Service
 public class SmartEmployeeService implements EmployeeService {
@@ -16,7 +18,9 @@ public class SmartEmployeeService implements EmployeeService {
 
     @Override
     public int getPayRaisePercent(Employee employee) {
-        int experience = now.getYear() - (employee.getStarted().getYear());
+        Duration duration=Duration.between(employee.getStarted(), now.atStartOfDay());
+        double experience = duration.toDays()/365;
+
         if (experience >= config.getSalary().getSmart().getLimit10()) {
             return config.getSalary().getSmart().getPercent10();
         } else if (experience >= config.getSalary().getSmart().getLimit5()) {

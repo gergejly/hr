@@ -1,6 +1,6 @@
 Spring:
-  main:
-    allow-circular-references: true
+#  main:
+#    allow-circular-references: true
   profiles:
     active: smart
 
