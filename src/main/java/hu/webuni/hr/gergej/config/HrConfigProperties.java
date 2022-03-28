@@ -3,6 +3,8 @@ package hu.webuni.hr.gergej.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.TreeMap;
+
 @ConfigurationProperties(prefix = "hr")
 @Component
 public class HrConfigProperties {
@@ -59,6 +61,8 @@ public class HrConfigProperties {
             private int limit5;
             private double limitTwoHalf;
 
+            private TreeMap<Double, Integer> limits;
+
             public int getPercent5() {
                 return percent5;
             }
@@ -99,8 +103,18 @@ public class HrConfigProperties {
                 this.limit5 = limit5;
             }
 
+            public TreeMap<Double, Integer> getLimits() {
+                return limits;
+            }
+
+            public void setLimits(TreeMap<Double, Integer> limits) {
+                this.limits = limits;
+            }
+
             public double getLimitTwoHalf() {
                 return limitTwoHalf;
+
+
             }
 
             public void setLimitTwoHalf(double limitTwoHalf) {

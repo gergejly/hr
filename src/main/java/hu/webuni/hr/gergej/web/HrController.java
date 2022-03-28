@@ -1,10 +1,18 @@
 package hu.webuni.hr.gergej.web;
 
 import hu.webuni.hr.gergej.dto.EmployeeDto;
+import hu.webuni.hr.gergej.model.Employee;
+import hu.webuni.hr.gergej.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +22,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/employees")
 public class HrController {
 
+    @Autowired
+    EmployeeService employeeService;
+
     private Map<Long, EmployeeDto> employees = new HashMap<>();
     {
         employees.put(1L,new EmployeeDto(1,"John Doe","Ceo",400000, LocalDateTime.of(2002,02,22,22,22)));
@@ -22,8 +33,10 @@ public class HrController {
         employees.put(4L,new EmployeeDto(4,"Hard Worker","worker",100000, LocalDateTime.of(2022,2,2,2,2)));
     }
        @GetMapping
-       public List<EmployeeDto> getAll() {
+       public List<EmployeeDto> getAll(@RequestParam(required = false) Integer minSalary) {
+        if (minSalary==null)
         return employees.values().stream().collect(Collectors.toList());
+        else return employees.values().stream().filter(e -> e.getSalary()>minSalary).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -35,8 +48,23 @@ public class HrController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/salary")
+    public Integer getNewSalary(@RequestBody Employee employee){
+        return employeeService.getPayRaisePercent(employee);
+    }
+
+//    1. Megoldás
+//    @GetMapping(params="minSalary")
+//    public List<EmployeeDto> getAllByMinSalary(@RequestParam int minSalary){
+//        return employees.values().stream().filter( e -> e.getSalary()>minSalary).collect(Collectors.toList());
+//    }
+
+
     @PostMapping
         public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto){
+        if (employees.containsValue(employeeDto)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         employees.put(employeeDto.getId(), employeeDto);
         return employeeDto;
     }
@@ -54,5 +82,9 @@ public class HrController {
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable long id){
         employees.remove(id);
+    }
+
+    public Map<Long, EmployeeDto> getEmployees() {
+        return employees;
     }
 }

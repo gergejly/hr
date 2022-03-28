@@ -1,5 +1,6 @@
 package hu.webuni.hr.gergej;
 
+import hu.webuni.hr.gergej.config.HrConfigProperties;
 import hu.webuni.hr.gergej.model.Employee;
 import hu.webuni.hr.gergej.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class HrApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		System.out.println(salaryService.setNewSalary(new Employee(200000, 2010,11,17)));
 		System.out.println(salaryService.setNewSalary(new Employee(200000, 2016,3,21)));
 		System.out.println(salaryService.setNewSalary(new Employee(200000, 2018,5,5)));

@@ -4,6 +4,13 @@ Spring:
   profiles:
     active: smart
 
+  thymeleaf:
+    cache: false
+
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+
 hr:
   salary:
      def:
@@ -16,3 +23,9 @@ hr:
         limit10: 10
         limit5: 5
         limitTwoHalf: 2
+        limits:
+          1: 1
+          2.5: 2
+          5: 5
+          10: 10
+          7.5: 8

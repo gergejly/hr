@@ -1,5 +1,6 @@
 package hu.webuni.hr.gergej.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

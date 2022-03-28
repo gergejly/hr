@@ -7,6 +7,26 @@
 <body>
 <h1>List of employees</h1>
 
+<table border="1px solid black">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Title</th>
+        <th>Salary</th>
+        <th>Start date</th>   </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee :${employees}">
+        <td th:text="${employee.id}">Id</td>
+        <td th:text="${employee.name}">Name</td>
+        <td th:text="${employee.rank}">Rank</td>
+        <td th:text="${employee.salary}">Salary</td>
+        <td th:text="${employee.started}">Start date</td>
+    </tr>
+    </tbody>
+</table>
+<br><br>
 <ul>
     <li th:each="employee : ${employees}">
         <span th:text = "${employee.id}" >id</span>
@@ -22,7 +42,7 @@
     Name: <input th:field="*{name}" /> <br/>
     Rank: <input th:field="*{rank}" /> <br/>
     Salary: <input th:field="*{salary}" /> <br/>
-    Started job: <input th:field="*{started}" /> <br/>
+    Started job: <input th:date="*{started}" /> <br/>
     <input type="submit" value="Add" />
 </form>
 </body>
