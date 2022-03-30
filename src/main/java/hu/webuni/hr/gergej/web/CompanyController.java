@@ -59,6 +59,7 @@ public class CompanyController {
     }
 
 
+
     @PutMapping("/{id}")
     public ResponseEntity<CompanyDto> modifyCompany(@PathVariable long id, @RequestBody CompanyDto companyDto){
         if (companies.containsKey(id)){
@@ -78,6 +79,16 @@ public class CompanyController {
        allEmployees.add(employeeDto);
        return ResponseEntity.ok(companies.get(companyId));
     }
+    // 2. Megoldás
+    @PostMapping("/{id}/employees")
+    public CompanyDto addEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto){
+        if (!companies.containsKey(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        CompanyDto companyDto = companies.get(id);
+        companyDto.getEmployeesOfCo().add(employeeDto);
+        return companyDto;
+    }
 
     @DeleteMapping("/{id}")
     public void deleteCompany(@PathVariable long id){
@@ -91,7 +102,17 @@ public class CompanyController {
         }
        CompanyDto company= companies.get(companyId);
        List<EmployeeDto>employeeDtoList = company.getEmployeesOfCo();
-       employeeDtoList.remove(employeeDtoList.get((int) employeeId-1));
-      // company.setEmployeesOfCo(employeeDtoList);
+       employeeDtoList.removeIf(e -> e.getEmployeeId() == employeeId);
+    }
+
+    // 2. Megoldás
+    @DeleteMapping("/{id}/employees/{employeeId}")
+    public CompanyDto deleteEmployee(@PathVariable long id, @PathVariable long employeeId){
+        if (!companies.containsKey(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        CompanyDto companyDto=companies.get(id);
+        companyDto.getEmployeesOfCo().removeIf(e -> e.getEmployeeId() == employeeId);
+        return companyDto;
     }
 }
