@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 @Component
 public class EmployeeDto {
 
-    private long id;
+    private long employeeId;
     private String name;
     private String rank;
     private int salary;
     private LocalDateTime started;
 
-    public EmployeeDto(long id, String name, String rank, int salary, LocalDateTime started) {
-        this.id = id;
+    public EmployeeDto(long employeeId, String name, String rank, int salary, LocalDateTime started) {
+        this.employeeId = employeeId;
         this.name = name;
         this.rank = rank;
         this.salary = salary;
@@ -24,12 +24,12 @@ public class EmployeeDto {
     public EmployeeDto() {
     }
 
-    public long getId() {
-        return id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getName() {

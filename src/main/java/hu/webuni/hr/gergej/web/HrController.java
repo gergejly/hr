@@ -4,15 +4,12 @@ import hu.webuni.hr.gergej.dto.EmployeeDto;
 import hu.webuni.hr.gergej.model.Employee;
 import hu.webuni.hr.gergej.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +62,14 @@ public class HrController {
         if (employees.containsValue(employeeDto)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        employees.put(employeeDto.getId(), employeeDto);
+        employees.put(employeeDto.getEmployeeId(), employeeDto);
         return employeeDto;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @RequestBody EmployeeDto employeeDto){
         if (employees.containsKey(id)){
-            employeeDto.setId(id);
+            employeeDto.setEmployeeId(id);
             employees.put(id, employeeDto);
             return ResponseEntity.ok(employeeDto);
         }

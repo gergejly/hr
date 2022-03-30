@@ -19,10 +19,11 @@
     <tbody>
     <tr th:each="employee :${employees}">
         <td th:text="${employee.id}">Id</td>
-        <td th:text="${employee.name}">Name</td>
+        <td><a th:href="@{/employees/{id}(id=${employee.id})}" th:text="${employee.name}">Name</a></td>
         <td th:text="${employee.rank}">Rank</td>
         <td th:text="${employee.salary}">Salary</td>
         <td th:text="${employee.started}">Start date</td>
+        <td><a th:href="@{/deleteEmployee/{id}(id=${employee.id})}">Delete</a></td>
     </tr>
     </tbody>
 </table>

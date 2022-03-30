@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/companies")
 public class CompanyController {
 
-    @Autowired HrController hrController=new HrController();
+    @Autowired
+    HrController hrController =new HrController();
 
     private Map<Long, CompanyDto> companies=new HashMap<>();
     {
@@ -27,19 +28,22 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<CompanyDto> getAllCompanies(@RequestParam(required = false) boolean full){
+    public List<CompanyDto> getAllCompanies(@RequestParam(required = false) Boolean full){
         if (full){
-            return companies.values().stream().collect(Collectors.toList());
+            return new ArrayList<>(companies.values());
         }
         return companies.values().stream()
                 .map(e -> new CompanyDto(e.getCompanyId(),e.getRegNumber(),e.getName(), e.getAddress(),null)).collect(Collectors.toList());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyDto> getCompanyById(@PathVariable long id){
+    public ResponseEntity<CompanyDto> getCompanyById(@RequestParam(required = false) Boolean full, @PathVariable long id){
         if (!companies.containsKey(id)){
             return ResponseEntity.notFound().build();
+        }CompanyDto companyDto=companies.get(id);
+        if(full) {
+            return ResponseEntity.ok(companies.get(id));
         }
-        return ResponseEntity.ok(companies.get(id));
+        return ResponseEntity.ok(new CompanyDto(companyDto.getCompanyId(), companyDto.getRegNumber(), companyDto.getName(), companyDto.getAddress(), null));
     }
 
     @PostMapping
@@ -70,9 +74,8 @@ public class CompanyController {
        if (!companies.containsKey(companyId)){
        return ResponseEntity.notFound().build();
        }
-       List<EmployeeDto> allEmployees=companies.get(companyId).getEmployeesOfCo();
+       List<EmployeeDto> allEmployees = companies.get(companyId).getEmployeesOfCo();
        allEmployees.add(employeeDto);
-       companies.get(companyId).setEmployeesOfCo(allEmployees);
        return ResponseEntity.ok(companies.get(companyId));
     }
 
@@ -84,11 +87,11 @@ public class CompanyController {
     @DeleteMapping("/employee/{companyId}/{employeeId}")
     public void deleteEmployeeFromCo(@PathVariable long companyId, @PathVariable long employeeId){
         if (!companies.containsKey(companyId)){
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
        CompanyDto company= companies.get(companyId);
        List<EmployeeDto>employeeDtoList = company.getEmployeesOfCo();
        employeeDtoList.remove(employeeDtoList.get((int) employeeId-1));
-       company.setEmployeesOfCo(employeeDtoList);
+      // company.setEmployeesOfCo(employeeDtoList);
     }
 }
