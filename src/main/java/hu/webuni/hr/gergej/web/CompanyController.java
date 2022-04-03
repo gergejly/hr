@@ -28,22 +28,24 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<CompanyDto> getAllCompanies(@RequestParam(required = false) Boolean full){
-        if (full){
-            return new ArrayList<>(companies.values());
-        }
-        return companies.values().stream()
-                .map(e -> new CompanyDto(e.getCompanyId(),e.getRegNumber(),e.getName(), e.getAddress(),null)).collect(Collectors.toList());
+    public List<CompanyDto> getAllCompanies(@RequestParam(required = false) Boolean full) {
+        if (full == null ||!full){
+           return companies.values().stream().map(c -> new CompanyDto(c.getCompanyId(),c.getRegNumber(),c.getName(),c.getAddress(),null))
+           .collect(Collectors.toList());
+        }else
+        return new ArrayList<>(companies.values());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDto> getCompanyById(@RequestParam(required = false) Boolean full, @PathVariable long id){
         if (!companies.containsKey(id)){
             return ResponseEntity.notFound().build();
-        }CompanyDto companyDto=companies.get(id);
-        if(full) {
-            return ResponseEntity.ok(companies.get(id));
         }
-        return ResponseEntity.ok(new CompanyDto(companyDto.getCompanyId(), companyDto.getRegNumber(), companyDto.getName(), companyDto.getAddress(), null));
+        CompanyDto companyDto=companies.get(id);
+        if (full==null ||!full){
+            return ResponseEntity.ok(new CompanyDto(companyDto.getCompanyId(),companyDto.getRegNumber(),companyDto.getName(), companyDto.getAddress(), null));
+        }
+            return ResponseEntity.ok(companyDto);
     }
 
     @PostMapping
@@ -96,13 +98,14 @@ public class CompanyController {
     }
 
     @DeleteMapping("/employee/{companyId}/{employeeId}")
-    public void deleteEmployeeFromCo(@PathVariable long companyId, @PathVariable long employeeId){
+    public CompanyDto deleteEmployeeFromCo(@PathVariable long companyId, @PathVariable long employeeId){
         if (!companies.containsKey(companyId)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
        CompanyDto company= companies.get(companyId);
        List<EmployeeDto>employeeDtoList = company.getEmployeesOfCo();
        employeeDtoList.removeIf(e -> e.getEmployeeId() == employeeId);
+       return company;
     }
 
     // 2. Megoldás

@@ -45,7 +45,7 @@ public class HrController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/salary")
+    @PostMapping("/salary")
     public Integer getNewSalary(@RequestBody Employee employee){
         return employeeService.getPayRaisePercent(employee);
     }
