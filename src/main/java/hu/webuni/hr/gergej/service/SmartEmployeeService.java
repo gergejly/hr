@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
-public class SmartEmployeeService implements EmployeeService {
+public class SmartEmployeeService extends EmployeeSeviceSuperClass implements EmployeeService {
     LocalDate now = LocalDate.now();
 
     @Autowired
@@ -56,5 +54,19 @@ public class SmartEmployeeService implements EmployeeService {
 
         Map.Entry<Double, Integer> floorEntry = limits.floorEntry(experience);
         return floorEntry == null ? 0 : floorEntry.getValue();
+    }
+
+    public void save(Employee employee){
+        super.saveEmployee(employee);
+    }
+
+    @Override
+    public Employee saveEmployee(Employee employee) {
+        return super.saveEmployee(employee);
+    }
+
+    @Override
+    public List<Employee> findAllEmployees() {
+        return super.findAllEmployees();
     }
 }

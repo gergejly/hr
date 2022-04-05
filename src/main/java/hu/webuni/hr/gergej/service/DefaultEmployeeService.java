@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 //@Primary
-public class DefaultEmployeeService implements EmployeeService {
+public class DefaultEmployeeService extends EmployeeSeviceSuperClass implements EmployeeService{
 
     @Autowired
     HrConfigProperties config;

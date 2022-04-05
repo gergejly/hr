@@ -29,3 +29,6 @@ hr:
           5: 5
           10: 10
           7.5: 8
+server:
+  error:
+    include-message: always
