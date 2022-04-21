@@ -1,22 +1,35 @@
 package hu.webuni.hr.gergej.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-@Component
+@Entity
 public class Employee {
 
+    @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String rank;
     private int salary;
     private LocalDateTime started;
 
+    @ManyToOne
+    private Company company;
+
     public Employee(int salary, int year, int month, int day){
         this.salary=salary;
         this.started=LocalDateTime.of(year, month, day, 10,10,0);
+    }
+
+    public Employee(String name, String rank, int salary, LocalDateTime started) {
+        this.name = name;
+        this.rank = rank;
+        this.salary = salary;
+        this.started = started;
     }
 
     public Employee(long id, String name, String rank, int salary, LocalDateTime started) {
@@ -68,5 +81,13 @@ public class Employee {
 
     public void setStarted(LocalDateTime started) {
         this.started = started;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

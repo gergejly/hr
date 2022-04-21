@@ -11,8 +11,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 
-    @Mapping(source = "employeeId", target = "id")
-    List<EmployeeDto> employeeToDtos (List<Employee> employees);
 
     @Mapping(source = "id", target = "employeeId")
     EmployeeDto employeeToDto (Employee employee);
@@ -20,6 +18,9 @@ public interface EmployeeMapper {
     @Mapping(source = "employeeId", target = "id")
     Employee dtoToEmployee(EmployeeDto employeeDto);
 
-    @Mapping(source = "id", target = "employeeId")
+    //@Mapping(source = "employeeId", target = "id")
+    List<EmployeeDto> employeeToDtos (List<Employee> employees);
+
+    //@Mapping(source = "id", target = "employeeId")
     List<Employee> dtosToEmployees(List<EmployeeDto> employeeDtoList);
 }

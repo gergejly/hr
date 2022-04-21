@@ -2,6 +2,7 @@ package hu.webuni.hr.gergej;
 
 import hu.webuni.hr.gergej.config.HrConfigProperties;
 import hu.webuni.hr.gergej.model.Employee;
+import hu.webuni.hr.gergej.service.InitDbService;
 import hu.webuni.hr.gergej.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +17,9 @@ public class HrApplication implements CommandLineRunner {
 	@Autowired
 	SalaryService salaryService;
 
+	@Autowired
+	InitDbService initDbService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(HrApplication.class, args);
 	}
@@ -28,5 +32,8 @@ public class HrApplication implements CommandLineRunner {
 		System.out.println(salaryService.setNewSalary(new Employee(200000, 2018,5,5)));
 		System.out.println(salaryService.setNewSalary(new Employee(400000,2019,6,19)));
 		System.out.println(salaryService.setNewSalary(new Employee(400000, 2020, 3,22)));
+
+		initDbService.clearDB();
+		initDbService.insertTestData();
 	}
 }

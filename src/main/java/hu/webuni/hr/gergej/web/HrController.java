@@ -4,12 +4,9 @@ import hu.webuni.hr.gergej.dto.EmployeeDto;
 import hu.webuni.hr.gergej.mapper.EmployeeMapper;
 import hu.webuni.hr.gergej.model.Employee;
 import hu.webuni.hr.gergej.service.EmployeeService;
-import hu.webuni.hr.gergej.service.EmployeeSeviceSuperClass;
-import hu.webuni.hr.gergej.service.SmartEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,10 +19,10 @@ import java.util.stream.Collectors;
 public class HrController {
 
     @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     @Autowired
-    EmployeeMapper employeeMapper;
+    private EmployeeMapper employeeMapper;
 
        @GetMapping
        public List<EmployeeDto> getAll(@RequestParam(required = false) Integer minSalary) {
@@ -37,7 +34,7 @@ public class HrController {
 
     @GetMapping("/{id}")
     public EmployeeDto getById(@PathVariable long id){
-        Employee employee= employeeService.findEmployeeById(id);
+        Employee employee= employeeService.findEmployeeById(id).get();
         if (employee!=null){
             return employeeMapper.employeeToDto(employee);
         }throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -64,13 +61,12 @@ public class HrController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto){
-           Employee employee=employeeMapper.dtoToEmployee(employeeDto);
-        if (employeeService.getEmployees().containsKey(id)){
-            employeeDto.setEmployeeId(id);
-            employeeService.saveEmployee(employee);
-            return ResponseEntity.ok(employeeDto);
-        }
-        return ResponseEntity.notFound().build();
+           employeeDto.setEmployeeId(id);
+           Employee updatedEmployee = employeeService.update(employeeMapper.dtoToEmployee(employeeDto));
+           if (updatedEmployee==null){
+               return ResponseEntity.notFound().build();
+           }
+        else return ResponseEntity.ok(employeeMapper.employeeToDto(updatedEmployee));
     }
 
     @DeleteMapping("/{id}")

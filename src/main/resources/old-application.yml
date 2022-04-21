@@ -11,6 +11,20 @@ Spring:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
 
+  datasource:
+    url: jdbc:mysql://localhost:3306/dbname?useSSL=false
+    username: root
+    password: test1234
+
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/webuni
+#    username: postgres
+#    password: postgres
+
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: update
+
 hr:
   salary:
      def:

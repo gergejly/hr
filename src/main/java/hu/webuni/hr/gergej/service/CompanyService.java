@@ -2,48 +2,73 @@ package hu.webuni.hr.gergej.service;
 
 import hu.webuni.hr.gergej.model.Company;
 import hu.webuni.hr.gergej.model.Employee;
-import hu.webuni.hr.gergej.web.CompanyController;
+import hu.webuni.hr.gergej.repository.CompanyRepository;
+import hu.webuni.hr.gergej.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
 
+    @Autowired
+    CompanyRepository companyRepository;
 
-    private Map<Long, Company> companies=new HashMap<>();
-    {
-         companies.put(1L,new Company(1,1234,"IBM","Silicium Valley", new ArrayList<Employee>(List.of
-                  (new Employee( 1,"Nagy Árpi","Worker",220000, LocalDateTime.of(2002, 02, 22, 22, 22))))));
-         companies.put(2L,new Company(2,5678,"Apple","Cupertino",new ArrayList<Employee>(List.of
-                  (new Employee(2, "Mekk Elek", "Leader", 200000, LocalDateTime.of(2018, 8, 8, 8, 8))))));
-                                          //   employeeService.getEmployees().values().stream().collect(Collectors.toList())));
-    }
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     public Company save (Company company){
-        companies.put(company.getCompanyId(), company);
-        return company;
+       return companyRepository.save(company);
+    }
+
+    public Company update(Company company){
+        if (!companyRepository.existsById(company.getCompanyId()))
+            return null;
+        return companyRepository.save(company);
     }
 
     public List<Company> findAllComapnies (){
-        return new ArrayList<>(companies.values());
+        return companyRepository.findAll();
     }
 
-    public Company findByCompanyId (long id){
-        return companies.get(id);
+    public Optional<Company> findByCompanyId (long id){
+        return companyRepository.findById(id);
     }
 
     public void deleteCompany (long id){
-        companies.remove(id);
+        companyRepository.deleteById(id);
     }
 
-    public Map<Long, Company> getCompanies() {
-        return companies;
+    public Company addEmployee(long id, Employee employee){
+       Company company= companyRepository.findById(id).get();
+       company.addEmployee(employee);
+       employeeRepository.save(employee);
+       return company;
+    }
+
+    public Company deleteEmployee(long id, long employeeId){
+        Company company = companyRepository.findById(id).get();
+        Employee employee = employeeRepository.findById(employeeId).get();
+        employee.setCompany(null);
+        company.getEmployeesOfCo().remove(employeeId);
+        employeeRepository.save(employee);
+        return company;
+    }
+
+    public Company replaceEmployees(long id, List<Employee> employees) {
+        Company company=companyRepository.findById(id).get();
+        for (Employee employee : company.getEmployeesOfCo()) {
+            employee.setCompany(null);
+        }
+        company.getEmployeesOfCo().clear();
+
+        for (Employee employee : employees) {
+            company.addEmployee(employee);
+           Employee savedEmployee = employeeRepository.save(employee);
+           employee.setId(savedEmployee.getId());
+        }
+        return company;
     }
 }

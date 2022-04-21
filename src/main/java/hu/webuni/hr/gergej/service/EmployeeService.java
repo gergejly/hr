@@ -4,6 +4,7 @@ import hu.webuni.hr.gergej.model.Employee;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface EmployeeService {
 
@@ -11,12 +12,12 @@ public interface EmployeeService {
 
     List<Employee> findAllEmployees();
 
-    public Employee findEmployeeById(long id);
+    public Optional<Employee> findEmployeeById(long id);
 
     public Employee saveEmployee(Employee employee);
 
-    public void deleteEmployee(long id);
+    public Employee update(Employee employee);
 
-    public Map<Long, Employee> getEmployees();
+    public void deleteEmployee(long id);
 
 }

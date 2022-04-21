@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Component
@@ -15,7 +16,7 @@ public class EmployeeDto {
     private String name;
     @NotEmpty
     private String rank;
-    @Min(value = 0L)
+    @Positive
     private int salary;
     @Past
     private LocalDateTime started;

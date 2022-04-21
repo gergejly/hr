@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class SmartEmployeeService extends EmployeeSeviceSuperClass implements EmployeeService {
+public class SmartEmployeeService extends AbstractEmployeeService {
     LocalDate now = LocalDate.now();
 
     @Autowired
@@ -66,7 +66,13 @@ public class SmartEmployeeService extends EmployeeSeviceSuperClass implements Em
     }
 
     @Override
+    public Employee update(Employee employee) {
+        return super.updateEmployee(employee);
+    }
+
+    @Override
     public List<Employee> findAllEmployees() {
         return super.findAllEmployees();
     }
+
 }
