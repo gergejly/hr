@@ -21,12 +21,16 @@ public class EmployeeDto {
     @Past
     private LocalDateTime started;
 
+    private CompanyDto companyDto;
+
     public EmployeeDto(long employeeId, String name, String rank, int salary, LocalDateTime started) {
         this.employeeId = employeeId;
         this.name = name;
         this.rank = rank;
         this.salary = salary;
         this.started = started;
+
+
     }
 
     public EmployeeDto() {
@@ -70,5 +74,13 @@ public class EmployeeDto {
 
     public void setStarted(LocalDateTime started) {
         this.started = started;
+    }
+
+    public CompanyDto getCompanyDto() {
+        return companyDto;
+    }
+
+    public void setCompanyDto(CompanyDto companyDto) {
+        this.companyDto = companyDto;
     }
 }

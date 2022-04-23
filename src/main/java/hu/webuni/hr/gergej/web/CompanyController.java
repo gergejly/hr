@@ -6,6 +6,7 @@ import hu.webuni.hr.gergej.mapper.CompanyMapper;
 import hu.webuni.hr.gergej.mapper.EmployeeMapper;
 import hu.webuni.hr.gergej.model.Company;
 import hu.webuni.hr.gergej.model.Employee;
+import hu.webuni.hr.gergej.repository.CompanyRepository;
 import hu.webuni.hr.gergej.service.CompanyService;
 import hu.webuni.hr.gergej.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +31,39 @@ public class CompanyController {
     @Autowired
     EmployeeMapper employeeMapper;
 
+    @Autowired
+    CompanyRepository companyRepository;
+
     @GetMapping
     public List<CompanyDto> getAllCompanies(@RequestParam(required = false) Boolean full) {
         List<Company> companies = companyService.findAllComapnies();
-        if (isFull(full)) {
-            return companyMapper.companiesToDtos(companies);
-        } else {
-            return companyMapper.companiesToDtosNoEmployees(companies);
-        }
+       return mapCompanies(companies,full);
     }
     private boolean isFull(Boolean full) {
         return full !=null && full;
     }
+
+    private List<CompanyDto> mapCompanies(List<Company> companies, Boolean full){
+        if (isFull(full)){
+            return companyMapper.companiesToDtos(companies);
+        }
+        else return  companyMapper.companiesToDtosNoEmployees(companies);
+    }
+
+    @GetMapping(params="aboveSalary")
+    public List<CompanyDto> getCompaniesAboveSalary(@RequestParam int aboveSalary,
+                                                    @RequestParam (required = false) Boolean full){
+        List<Company> allCompanies = companyRepository.findEmployeeWithSalaryHigherThan(aboveSalary);
+        return mapCompanies(allCompanies, full);
+    }
+
+    @GetMapping(params = "aboveEmployeeNumber")
+    public List<CompanyDto> getCompaniesAboveEmployeeNumber(@RequestParam int aboveEmployeeNumber,
+                                                            @RequestParam(required = false) Boolean full) {
+        List<Company> filteredCompanies = companyRepository.findByEmployeeCountHigherThan(aboveEmployeeNumber);
+        return mapCompanies(filteredCompanies, full);
+    }
+
 
     @GetMapping("/{id}")
     public CompanyDto getCompanyById(@RequestParam(required = false) Boolean full, @PathVariable long id){
